@@ -13,7 +13,7 @@ const Contents = ({ children }) => {
       <Header />
       <div
         style={{
-          padding: "1rem",
+          padding: "2rem",
         }}
       >
         {children}
