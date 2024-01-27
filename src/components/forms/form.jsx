@@ -1,5 +1,5 @@
+"use client"
 import { FormProvider, useForm } from "react-hook-form";
-
 
 const Form = ({children, submitHandler, defaultValues}) => {
 
@@ -11,6 +11,7 @@ const Form = ({children, submitHandler, defaultValues}) => {
     const {handleSubmit, reset} = methods
 
   const onSubmit = (data) => {
+    console.log(data);
     submitHandler(data)
     reset();
 }

@@ -1,10 +1,15 @@
 
+import EmployeeCard from "../../../components/ui/EmployeeCard";
+
 const CreateEmployeePage = () => {
   return (
-    <div>
-        create 
+    <div >
+        <EmployeeCard />
     </div>
   );
 };
 
 export default CreateEmployeePage;  
+
+
+
