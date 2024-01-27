@@ -1,3 +1,7 @@
+
+
+import { AntdRegistry } from '@ant-design/nextjs-registry';
+import { ConfigProvider } from "antd";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -9,9 +13,34 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
+  const customTheme = {
+    token: {
+      colorPrimary: "#17494E",
+      colorInfo: "#B98C48",
+    },
+    components: {
+      Layout: {
+        triggerBg: "#B98C48",
+        colorBgBody: "#f1efff",
+      },
+      Menu: {
+        darkItemBg: "#17494E",
+        darkSubMenuItemBg: "#B98C48",
+      },
+    },
+  };
+
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <ConfigProvider theme={customTheme}>
+      <body className={inter.className}>
+      <AntdRegistry>
+        {children}
+      </AntdRegistry>
+        </body>
+        </ConfigProvider>
     </html>
   );
 }

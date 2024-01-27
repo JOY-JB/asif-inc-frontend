@@ -1,0 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;700&family=Roboto+Condensed:wght@300;400;700&family=Space+Mono&display=swap");
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
+}
