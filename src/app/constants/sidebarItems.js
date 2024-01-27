@@ -7,7 +7,7 @@ export const sidebarItems = () => {
 
   const defaultSidebarItems = [
     {
-      label: <Link href={"/"}>Home</Link>,
+      label: <Link href={"/employees"}>Employees List</Link>,
       key: "Employees List",
       icon: <UsergroupAddOutlined />,
     },

@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
     components: {
       Layout: {
         triggerBg: "#B98C48",
-        colorBgBody: "#f1efff",
+        bodyBg: "#f6feff",
       },
       Menu: {
         darkItemBg: "#17494E",

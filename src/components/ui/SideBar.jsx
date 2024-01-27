@@ -1,8 +1,8 @@
 "use client"
 
-import { sidebarItems } from "@/app/constants/sidebarItems";
 import { Layout, Menu } from "antd";
 import { useState } from "react";
+import { sidebarItems } from "../../app/constants/sidebarItems";
 const { Sider } = Layout;
 
 
