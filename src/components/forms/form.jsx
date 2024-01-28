@@ -1,27 +1,26 @@
-"use client"
+"use client";
+
 import { FormProvider, useForm } from "react-hook-form";
 
-const Form = ({children, submitHandler, defaultValues}) => {
+const Form = ({ children, submitHandler, defaultValues }) => {
+  const formConfig = {};
 
-    const formConfig = {}
+  if (!!defaultValues) formConfig["defaultValues"] = defaultValues;
 
-    if (!!defaultValues) formConfig["defaultValues"] = defaultValues;
+  const methods = useForm(formConfig);
 
-    const methods = useForm();
-    const {handleSubmit, reset} = methods
+  const { handleSubmit, reset } = methods;
 
   const onSubmit = (data) => {
-    submitHandler(data)
+    submitHandler(data);
     reset();
-}
+  };
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {children}
-      </form>
+      <form onSubmit={handleSubmit(onSubmit)}>{children}</form>
     </FormProvider>
-  )
+  );
 };
 
 export default Form;

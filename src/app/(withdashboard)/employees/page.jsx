@@ -6,7 +6,7 @@ import {
   ProfileOutlined,
   StopOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Button, Grid, Space, Tag } from "antd";
+import { Breadcrumb, Button, Grid, Space, Tag, message } from "antd";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import EmployeesTable from "../../../components/table/employeesTable";
@@ -30,8 +30,9 @@ const EmployeesPage = () => {
 
   const handleDeleteOk = () => {
     axiosApi.delete(`/employees/employee/${selectedEmployee._id}`)
-    .then((res) => {
-      if (res?.data?.statusCode === 200) {
+    .then(({data}) => {
+      if (data?.statusCode === 200) {
+        message.success(data?.message)
         setData((prev) => prev.filter((item) => item._id !== selectedEmployee._id));
       }
     });
@@ -50,9 +51,10 @@ const EmployeesPage = () => {
   const handleBlockOk = () => {
     axiosApi.patch(`/employees/employee/${selectedEmployee._id}`, {
       isBlocked: !selectedEmployee.isBlocked,
-    }).then((res) => {
+    }).then(({data}) => {
 
-      if (res?.data?.statusCode === 200) {
+      if (data?.statusCode === 200) {
+        message.success(`Employee ${data?.data?.isBlocked ? "Blocked" : "Unblocked"} Successfully`)
         setData((prev) => prev.map((item) => {
           if (item._id === selectedEmployee._id) {
             return {
@@ -92,7 +94,6 @@ const EmployeesPage = () => {
       render: (itemData) => {
         const newData = data.find((item) => item._id === itemData._id )  
 
-        // console.log(newData);
 
         return <Tag color={newData.isBlocked ? "red" : "green"} key={newData._id}>
           {newData.isBlocked ? "Blocked" : "Unblock"}
@@ -119,7 +120,7 @@ const EmployeesPage = () => {
         );
         return (
           <Space size="small">
-            <Link href={`/employees/${data._id}`}>
+            <Link href={`/employees/${itemData._id}`}>
               <Button
                 type="text"
                 style={{ padding: screens.xs ? "0 5px" : "0 10px" }}

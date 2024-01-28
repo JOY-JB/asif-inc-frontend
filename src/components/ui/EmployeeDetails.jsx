@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, Spin, message } from "antd";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import axiosApi from "../../helpers/axois";
@@ -8,12 +8,20 @@ import Form from "../forms/Form";
 import FormInput from "../forms/FormInput";
 
 const EmployeeDetails = ({ employeeId }) => {
-const [EmployeeDetails, setEmployeeDetails] = useState(null);
+  const [EmployeeDetails, setEmployeeDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (data) => {
+    setLoading(true);
     try {
-      console.log(data);
+      axiosApi.patch(`/employees/employee/${employeeId}`, data)
+      .then(({data}) => {
+        setEmployeeDetails(data?.data);
+        setLoading(false);
+        message.success(data?.message);
+      });
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -25,7 +33,6 @@ const [EmployeeDetails, setEmployeeDetails] = useState(null);
       });
     }
   }, [employeeId]);
-
 
   return (
     <section className="" style={{ minHeight: "80vh" }}>
@@ -76,41 +83,58 @@ const [EmployeeDetails, setEmployeeDetails] = useState(null);
                 borderRadius: "1.5rem",
               }}
             >
+              {EmployeeDetails && !loading ? (
+                <Form submitHandler={onSubmit} defaultValues={EmployeeDetails}>
+                  <FormInput
+                    name={"firstName"}
+                    label={"First Name"}
+                    placeholder={"Enter Employee First Name"}
+                    required
+                  />
 
-              <Form submitHandler={onSubmit} defaultValues={EmployeeDetails} >
-                <FormInput
-                  name={"firstName"}
-                  label={"First Name"}
-                  placeholder={"Enter Employee First Name"}
-                />
+                  <FormInput
+                    name={"lastName"}
+                    label={"Last Name"}
+                    placeholder={"Enter Employee Last Name"}
+                    required
+                  />
 
-                <FormInput
-                  name={"lastName"}
-                  label={"Last Name"}
-                  placeholder={"Enter Employee Last Name"}
-                />
+                  <FormInput
+                    name={"email"}
+                    label={"Email"}
+                    disabled={true}
+                    placeholder={"Enter Employee email address"}
+                    required
+                  />
 
-                <FormInput
-                  name={"email"}
-                  label={"Email"}
-                  disabled={true}
-                  placeholder={"Enter Employee email address"}
-                />
+                  <FormInput
+                    name={"phoneNo"}
+                    label={"Phone No."}
+                    placeholder={"Enter Employee Phone no."}
+                    required
+                  />
 
-                <FormInput
-                  name={"phone"}
-                  label={"Phone No."}
-                  placeholder={"Enter Employee Phone no."}
-                />
-
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ width: "100%" }}
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ width: "100%" }}
+                  >
+                    Update
+                  </Button>
+                </Form>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  Update
-                </Button>
-              </Form>
+                  <Spin size="large">
+                    <div className="content" />
+                  </Spin>
+                </div>
+              )}
             </div>
           </div>
         </Col>
