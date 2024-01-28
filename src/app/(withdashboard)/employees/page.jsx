@@ -1,6 +1,7 @@
 "use client";
 
-import { Breadcrumb, Tag } from "antd";
+import { Breadcrumb, Button, Space, Tag } from "antd";
+import Link from "next/link";
 import EmployeesTable from "../../../components/table/EmployeesTable";
 
 const EmployeesPage = () => {
@@ -9,17 +10,20 @@ const EmployeesPage = () => {
       title: "#",
       dataIndex: "",
       key: "sl",
+      width: "5%",
       render: (text, record, index) => index + 1,
     },
     {
       title: "Full Name",
       key: "name",
+      width: "40%",
       render: (data) => data.firstName + " " + data.lastName,
     },
     {
       title: "Status",
       key: "isBlocked",
       dataIndex: "isBlocked",
+      width: "30%",
       render: (data) => (
         <Tag color={data ? "red" : "green"} key={data}>
           {data ? "Blocked" : "Unblock"}
@@ -28,13 +32,17 @@ const EmployeesPage = () => {
     },
     {
       title: "Action",
+      dataIndex: "_id",
       key: "action",
-      // render: (_, record) => (
-      // <Space size="middle">
-      //   <a>Invite {record.name}</a>
-      //   <a>Delete</a>
-      // </Space>
-      // ),
+      render: (data = 123456) => (
+        <Space size="small">
+          <Link href={`/employees/${data}`}>
+          <Button type="text">data</Button> 
+          </Link>
+          <Button type="text">Block</Button> 
+          <Button type="text" danger>Delete</Button> 
+        </Space>
+      ),
     },
   ];
   const data = [

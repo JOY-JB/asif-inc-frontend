@@ -11,7 +11,6 @@ const Form = ({children, submitHandler, defaultValues}) => {
     const {handleSubmit, reset} = methods
 
   const onSubmit = (data) => {
-    console.log(data);
     submitHandler(data)
     reset();
 }
