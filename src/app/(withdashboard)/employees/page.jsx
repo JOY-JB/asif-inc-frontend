@@ -9,7 +9,7 @@ import {
 import { Breadcrumb, Button, Grid, Space, Tag, message } from "antd";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import EmployeesTable from "../../../components/table/employeesTable";
+import EmployeesTable from '../../../components/table/EmployeesTable';
 import MyModal from "../../../components/ui/MyModal";
 import axiosApi from "../../../helpers/axois";
 
