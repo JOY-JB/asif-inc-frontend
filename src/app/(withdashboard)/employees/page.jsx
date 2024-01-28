@@ -1,10 +1,38 @@
 "use client";
 
-import { Breadcrumb, Button, Space, Tag } from "antd";
+import {
+  DeleteOutlined,
+  IssuesCloseOutlined,
+  ProfileOutlined,
+  StopOutlined,
+} from "@ant-design/icons";
+import { Breadcrumb, Button, Grid, Space, Tag } from "antd";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import EmployeesTable from "../../../components/table/employeesTable";
+import MyModal from "../../../components/ui/MyModal";
+import axiosApi from "../../../helpers/axois";
+
+const { useBreakpoint } = Grid;
 
 const EmployeesPage = () => {
+  const [data, setData] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const screens = useBreakpoint();
+
+  const showDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteOk = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+  };
+
   const columns = [
     {
       title: "#",
@@ -24,6 +52,7 @@ const EmployeesPage = () => {
       key: "isBlocked",
       dataIndex: "isBlocked",
       width: "30%",
+      responsive: ["sm"],
       render: (data) => (
         <Tag color={data ? "red" : "green"} key={data}>
           {data ? "Blocked" : "Unblock"}
@@ -32,62 +61,95 @@ const EmployeesPage = () => {
     },
     {
       title: "Action",
-      dataIndex: "_id",
+      width: "max-content",
       key: "action",
-      render: (data = 123456) => (
-        <Space size="small">
-          <Link href={`/employees/${data}`}>
-          <Button type="text">data</Button> 
-          </Link>
-          <Button type="text">Block</Button> 
-          <Button type="text" danger>Delete</Button> 
-        </Space>
-      ),
+      render: (data) => {
+        const content = data.isBlocked ? (
+          screens.xs ? (
+            <IssuesCloseOutlined />
+          ) : (
+            "Unblock"
+          )
+        ) : screens.xs ? (
+          <StopOutlined />
+        ) : (
+          "Block"
+        );
+        return (
+          <Space size="small">
+            <Link href={`/employees/${data._id}`}>
+              <Button
+                type="text"
+                style={{ padding: screens.xs ? "0 5px" : "0 10px" }}
+              >
+                {screens.xs ? <ProfileOutlined /> : "Details"}
+              </Button>
+            </Link>
+            <Button
+              type="text"
+              style={{ padding: screens.xs ? "0 5px" : "0 10px" }}
+            >
+              {content}
+            </Button>
+            <Button
+              type="text"
+              style={{ padding: screens.xs ? "0 5px" : "0 10px" }}
+              danger
+              onClick={showDeleteModal}
+            >
+              {screens.xs ? <DeleteOutlined /> : "Delete"}
+            </Button>
+          </Space>
+        );
+      },
     },
   ];
-  const data = [
-    {
-      key: "1",
-      firstName: "John",
-      lastName: "Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      isBlocked: true,
-    },
-    {
-      key: "2",
-      firstName: "Jim",
-      lastName: "Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      isBlocked: false,
-    },
-    {
-      key: "3",
-      firstName: "Joe",
-      lastName: "Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      isBlocked: true,
-    },
-  ];
+
+  useEffect(() => {
+    axiosApi.get("/employees").then((res) => {
+      setData(res?.data?.data);
+    });
+  }, []);
+
   return (
-    <div>
-      <Breadcrumb
-    items={[
-      {
-        title: 'Home',
-      },
-      {
-        title: 'Employees List',
-      },
-    ]}
+    <>
+      <div style={{ maxWidth: "100%" }}>
+        <Breadcrumb
+          items={[
+            {
+              title: "Home",
+            },
+            {
+              title: "Employees List",
+            },
+          ]}
+          style={{ marginBottom: "2rem" }}
+        />
 
-    style={{marginBottom: "2rem"}}
-  />
-
-      <EmployeesTable columns={columns} data={data} />
-    </div>
+        <EmployeesTable
+          columns={columns}
+          data={data}
+          loading={!data || false}
+        />
+      </div>
+      <MyModal
+        title={"Confirm Delete"}
+        handleOk={handleDeleteOk}
+        handleCancel={handleDeleteCancel}
+        isModalOpen={isDeleteModalOpen}
+      >
+        Confirm to Delete this Employee
+      </MyModal>
+      
+      <MyModal
+        title={"Confirm Block"}
+        handleOk={handleBlockOk}
+        handleCancel={handleBlockCancel}
+        isModalOpen={isModalBlockOpen}
+      >
+        Confirm to Delete this Employee
+      </MyModal>
+    </>
   );
 };
 

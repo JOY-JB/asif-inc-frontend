@@ -1,5 +1,6 @@
 import { Breadcrumb } from "antd";
 import EmployeeDetails from "../../../../components/ui/EmployeeDetails";
+
 const EmployeeDetailsPage = ({ params }) => {
   const { employeeId } = params;
 

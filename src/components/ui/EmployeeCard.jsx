@@ -5,7 +5,7 @@ import { Button, Card, Col, Row } from "antd";
 import Form from "../forms/Form";
 import FormInput from "../forms/FormInput";
 
-const EmployeeCard = ({ updateData = null }) => {
+const EmployeeCard = () => {
 
   const onSubmit = (data) => {
     try{
@@ -23,7 +23,7 @@ const EmployeeCard = ({ updateData = null }) => {
     >
       <Col xs={24} md={12} lg={10}>
         <Card
-          title={`${updateData ? "Update" : "Create"} Employee`}
+          title={`Create Employee`}
           style={{
             padding: "20px",
             border: "1.5px solid #17494E",
@@ -38,7 +38,7 @@ const EmployeeCard = ({ updateData = null }) => {
             
             <FormInput name={"phone"} label={"Phone No."} placeholder={"Enter Employee Phone no."}  />
 
-            <Button type="primary" htmlType="submit" style={{width: "100%"}}>{updateData ? "Update" : "Create"}</Button>
+            <Button type="primary" htmlType="submit" style={{width: "100%"}}>Create</Button>
           </Form>
         </Card>
       </Col>

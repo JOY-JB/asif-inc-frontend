@@ -8,6 +8,7 @@ const FormInput = ({
     value,
     placeholder,
     label,
+    disabled = false
   }) => {
 
     const { control } = useFormContext()
@@ -19,7 +20,7 @@ const FormInput = ({
         control={control}
         name={name}
         render={({ field }) => (
-          <Input size="large" placeholder={placeholder} {...field}
+          <Input size="large" disabled={disabled} placeholder={placeholder} {...field}
           value={value ? value : field.value} />
         )}
       />
