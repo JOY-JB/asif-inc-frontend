@@ -18,19 +18,41 @@ const { useBreakpoint } = Grid;
 const EmployeesPage = () => {
   const [data, setData] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isBlockModalOpen, setIsBlockModalOpen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   const screens = useBreakpoint();
 
-  const showDeleteModal = () => {
+  const showDeleteModal = (data) => {
+    setSelectedEmployee(data);
     setIsDeleteModalOpen(true);
   };
 
   const handleDeleteOk = () => {
+    axiosApi.delete(`/employees/employee/${selectedEmployee._id}`)
+    .then((res) => {
+      if (res?.data?.statusCode === 200) {
+        setData((prev) => prev.filter((item) => item._id !== selectedEmployee._id));
+      }
+    });
+
     setIsDeleteModalOpen(false);
   };
 
   const handleDeleteCancel = () => {
     setIsDeleteModalOpen(false);
+  };
+  const showBlockModal = (data) => {
+    setSelectedEmployee(data);
+    setIsBlockModalOpen(true);
+  };
+
+  const handleBlockOk = () => {
+    setIsBlockModalOpen(false);
+  };
+
+  const handleBlockCancel = () => {
+    setIsBlockModalOpen(false);
   };
 
   const columns = [
@@ -88,6 +110,7 @@ const EmployeesPage = () => {
             <Button
               type="text"
               style={{ padding: screens.xs ? "0 5px" : "0 10px" }}
+              onClick={() => showBlockModal(data)}
             >
               {content}
             </Button>
@@ -95,7 +118,7 @@ const EmployeesPage = () => {
               type="text"
               style={{ padding: screens.xs ? "0 5px" : "0 10px" }}
               danger
-              onClick={showDeleteModal}
+              onClick={() => showDeleteModal(data)}
             >
               {screens.xs ? <DeleteOutlined /> : "Delete"}
             </Button>
@@ -145,9 +168,9 @@ const EmployeesPage = () => {
         title={"Confirm Block"}
         handleOk={handleBlockOk}
         handleCancel={handleBlockCancel}
-        isModalOpen={isModalBlockOpen}
+        isModalOpen={isBlockModalOpen}
       >
-        Confirm to Delete this Employee
+        Confirm to Block this Employee
       </MyModal>
     </>
   );
