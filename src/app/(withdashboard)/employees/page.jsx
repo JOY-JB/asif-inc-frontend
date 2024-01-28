@@ -2,7 +2,7 @@
 
 import { Breadcrumb, Button, Space, Tag } from "antd";
 import Link from "next/link";
-import EmployeesTable from "../../../components/table/EmployeesTable";
+import EmployeesTable from "../../../components/table/employeesTable";
 
 const EmployeesPage = () => {
   const columns = [

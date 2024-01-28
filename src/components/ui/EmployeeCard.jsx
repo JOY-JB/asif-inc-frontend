@@ -19,9 +19,7 @@ const EmployeeCard = ({ updateData = null }) => {
     <Row
       align={"middle"}
       justify={"center"}
-      style={{
-        height: "85vh",
-      }}
+      
     >
       <Col xs={24} md={12} lg={10}>
         <Card
