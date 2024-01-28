@@ -48,6 +48,22 @@ const EmployeesPage = () => {
   };
 
   const handleBlockOk = () => {
+    axiosApi.patch(`/employees/employee/${selectedEmployee._id}`, {
+      isBlocked: !selectedEmployee.isBlocked,
+    }).then((res) => {
+
+      if (res?.data?.statusCode === 200) {
+        setData((prev) => prev.map((item) => {
+          if (item._id === selectedEmployee._id) {
+            return {
+              ...item,
+              isBlocked: !item.isBlocked
+            }
+          }
+          return item;
+        }));
+      }    
+    });
     setIsBlockModalOpen(false);
   };
 
@@ -71,22 +87,26 @@ const EmployeesPage = () => {
     },
     {
       title: "Status",
-      key: "isBlocked",
-      dataIndex: "isBlocked",
       width: "30%",
       responsive: ["sm"],
-      render: (data) => (
-        <Tag color={data ? "red" : "green"} key={data}>
-          {data ? "Blocked" : "Unblock"}
+      render: (itemData) => {
+        const newData = data.find((item) => item._id === itemData._id )  
+
+        // console.log(newData);
+
+        return <Tag color={newData.isBlocked ? "red" : "green"} key={newData._id}>
+          {newData.isBlocked ? "Blocked" : "Unblock"}
         </Tag>
-      ),
+      },
     },
     {
       title: "Action",
       width: "max-content",
       key: "action",
-      render: (data) => {
-        const content = data.isBlocked ? (
+      render: (itemData) => {
+        const newData = data.find((item) => item._id === itemData._id )  
+
+        const content =  newData.isBlocked ? (
           screens.xs ? (
             <IssuesCloseOutlined />
           ) : (
@@ -110,7 +130,7 @@ const EmployeesPage = () => {
             <Button
               type="text"
               style={{ padding: screens.xs ? "0 5px" : "0 10px" }}
-              onClick={() => showBlockModal(data)}
+              onClick={() => showBlockModal(itemData)}
             >
               {content}
             </Button>
@@ -118,7 +138,7 @@ const EmployeesPage = () => {
               type="text"
               style={{ padding: screens.xs ? "0 5px" : "0 10px" }}
               danger
-              onClick={() => showDeleteModal(data)}
+              onClick={() => showDeleteModal(itemData)}
             >
               {screens.xs ? <DeleteOutlined /> : "Delete"}
             </Button>
@@ -165,12 +185,12 @@ const EmployeesPage = () => {
       </MyModal>
       
       <MyModal
-        title={"Confirm Block"}
+        title={"Confirm Action"}
         handleOk={handleBlockOk}
         handleCancel={handleBlockCancel}
         isModalOpen={isBlockModalOpen}
       >
-        Confirm to Block this Employee
+        Confirm to Action this Employee
       </MyModal>
     </>
   );
